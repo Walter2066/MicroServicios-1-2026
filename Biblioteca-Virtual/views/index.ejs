@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Library</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Catalogo de Libros</h1>
+
+<a href="/new" class="btn-link">Nuevo Libro</a>
+
+<div class="card">
+
+<table>
+
+<thead>
+<tr>
+<th>Titulo</th>
+<th>Autor</th>
+<th>Precio</th>
+<th>Categoria</th>
+<th>Acciones</th>
+</tr>
+</thead>
+
+<tbody>
+
+<% books.forEach(book => { %>
+
+<tr>
+
+<td><%= book.title %></td>
+<td><%= book.author %></td>
+<td>$<%= book.price %></td>
+<td><%= book.category %></td>
+
+<td>
+
+<a href="/edit/<%= book._id %>" class="btn-edit">Editar</a>
+
+<form action="/books/<%= book._id %>?_method=DELETE" method="POST" style="display:inline;">
+<button class="btn-delete">Eliminar</button>
+</form>
+
+</td>
+
+</tr>
+
+<% }) %>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Edit Book</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Editar Libro</h1>
+
+<div class="card">
+
+<form action="/books/<%= book._id %>?_method=PUT" method="POST">
+
+<label>Titulo</label>
+<input type="text" name="title" value="<%= book.title %>" required>
+
+<label>Autor</label>
+<input type="text" name="author" value="<%= book.author %>" required>
+
+<label>Precio</label>
+<input type="number" name="price" value="<%= book.price %>" required>
+
+<label>Categoria</label>
+<input type="text" name="category" value="<%= book.category %>">
+
+<button class="btn-primary">Actualizar Libro</button>
+
+</form>
+
+</div>
+
+</div>
+
+</body>
+
+</html>
