@@ -1,23 +1,35 @@
 const db = require("../db");
 // GET todos
 exports.getAll = (req, res) => {
-  const { edad } = req.query;
+  const { page = 1, limit = 5 } = req.query;
 
-  let query = "SELECT * FROM usuarios";
-  let params = [];
+  const pageNum = parseInt(page);
+  const limitNum = parseInt(limit);
+  const offset = (pageNum - 1) * limitNum;
 
-  // Si viene filtro por edad
-  if (edad) {
-    query += " WHERE edad = ?";
-    params.push(edad);
-  }
+  const query = "SELECT * FROM usuarios LIMIT ? OFFSET ?";
 
-  db.query(query, params, (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
+  db.query(query, [limitNum, offset], (err, results) => {
+    if (err) {
+      return res.status(500).json({
+        transaccion: false,
+        mensaje: "Error al obtener usuarios",
+        data: err.message,
+      });
+    }
 
-    res.status(200).json(results);
+    res.status(200).json({
+      transaccion: true,
+      mensaje: "Usuarios obtenidos correctamente",
+      data: {
+        page: pageNum,
+        limit: limitNum,
+        resultados: results,
+      },
+    });
   });
 };
+
 // GET por ID
 exports.getById = (req, res) => {
   const { id } = req.params;
@@ -63,7 +75,6 @@ exports.update = (req, res) => {
   const { id } = req.params;
   const { nombre, email, edad, telefono } = req.body;
 
-  // 🔴 Validaciones
   if (!email) {
     return res.status(400).json({ mensaje: "El email es obligatorio" });
   }
